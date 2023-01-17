@@ -1,0 +1,47 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "server": "nodemon server.js --ignore 'client/'",
+    "client": "npm run serve --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "build": "npm install --prefix client && npm run build --prefix client"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "@vue/cli-service": "^4.5.13",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.1",
+    "connect-history-api-fallback": "^1.6.0",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.30.0",
+    "express": "^4.17.1",
+    "gridfs-stream": "^1.1.1",
+    "method-override": "^3.0.0",
+    "mongodb": "^3.6.8",
+    "mongoose": "^5.13.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
+    "path": "^0.12.7",
+    "vue-apexcharts": "^1.6.2",
+    "vuelidate": "^0.7.7",
+    "vuetify": "^2.6.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.9",
+    "vue-cli-plugin-vuetify": "~2.4.1"
+  },
+  "engines": {
+    "node": "14.15.1"
+  },
+  "keywords": [],
+  "license": "ISC"
+}
