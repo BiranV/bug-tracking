@@ -201,14 +201,6 @@
             label="Severity"
             clearable
           >
-            <template v-slot:selection="{ item, index }">
-              <v-chip v-if="index == 0">
-                <span>{{ item }}</span></v-chip
-              >
-              <span v-if="index == 1" class="grey--text text-caption"
-                >(+{{ item.Severity.length - 1 }} others)</span
-              >
-            </template>
           </v-select>
           <v-textarea
             rows="3"
@@ -282,14 +274,6 @@
             label="Severity"
             clearable
           >
-            <template v-slot:selection="{ item, index }">
-              <v-chip v-if="index == 0">
-                <span>{{ item }}</span></v-chip
-              >
-              <span v-if="index == 1" class="grey--text text-caption"
-                >(+{{ item.Severity.length - 1 }} others)</span
-              >
-            </template>
           </v-select>
           <v-textarea
             rows="3"
