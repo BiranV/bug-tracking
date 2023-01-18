@@ -61,12 +61,12 @@
                 </v-responsive>
               </v-toolbar>
             </template>
-            <template v-slot:[`item.Status`]="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               <v-chip
                 class="white--text"
                 small
-                :color="get_status_color(item.Status)"
-                >{{ item.Status }}</v-chip
+                :color="get_status_color(item.status)"
+                >{{ item.status }}</v-chip
               >
             </template>
             <template v-slot:[`item.actions`]="{ item }">
@@ -80,15 +80,15 @@
                 mdi-delete
               </v-icon>
             </template>
-            <template v-slot:[`item.Severity`]="{ item }">
-              <v-icon :color="get_severity_color(item.Severity)"
+            <template v-slot:[`item.severity`]="{ item }">
+              <v-icon :color="get_severity_color(item.severity)"
                 >mdi-circle-medium</v-icon
-              >{{ item.Severity }}
+              >{{ item.severity }}
             </template>
-            <template v-slot:[`item.Type`]="{ item }">
-              <v-icon :color="get_type_color(item.Type)"
+            <template v-slot:[`item.device`]="{ item }">
+              <v-icon :color="get_device_color(item.device)"
                 >mdi-circle-medium</v-icon
-              >{{ item.Type }}
+              >{{ item.device }}
             </template>
           </v-data-table>
         </v-col>
@@ -140,8 +140,8 @@
             <VueApexChart
               type="donut"
               height="220"
-              :options="options_types"
-              :series="series_type"
+              :options="options_device"
+              :series="series_device"
             ></VueApexChart>
             <VueApexChart
               type="donut"
@@ -166,9 +166,9 @@
             small-chips
             outlined
             dense
-            v-model="item.Type"
+            v-model="item.device"
             :items="['Web', 'Mobile']"
-            label="Type"
+            label="Device"
             clearable
           >
           </v-select>
@@ -176,7 +176,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Status"
+            v-model="item.status"
             :items="statusItems"
             label="Status"
             clearable
@@ -186,7 +186,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Employee"
+            v-model="item.employee"
             :items="employeeItems"
             label="Employee"
             clearable
@@ -196,7 +196,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Severity"
+            v-model="item.severity"
             :items="severityItems"
             label="Severity"
             clearable
@@ -206,7 +206,7 @@
             rows="3"
             dense
             outlined
-            v-model="item.Description"
+            v-model="item.desc"
             label="Description"
           ></v-textarea>
         </v-card-text>
@@ -239,9 +239,9 @@
             small-chips
             outlined
             dense
-            v-model="item.Type"
+            v-model="item.device"
             :items="['Web', 'Mobile']"
-            label="Type"
+            label="Device"
             clearable
           >
           </v-select>
@@ -249,7 +249,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Status"
+            v-model="item.status"
             :items="statusItems"
             label="Status"
             clearable
@@ -259,7 +259,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Employee"
+            v-model="item.employee"
             :items="employeeItems"
             label="Employee"
             clearable
@@ -269,7 +269,7 @@
             small-chips
             outlined
             dense
-            v-model="item.Severity"
+            v-model="item.severity"
             :items="severityItems"
             label="Severity"
             clearable
@@ -279,7 +279,7 @@
             rows="3"
             dense
             outlined
-            v-model="item.Description"
+            v-model="item.desc"
             label="Description"
           ></v-textarea
         ></v-card-text>
@@ -317,22 +317,22 @@
                 clearable
                 dense
                 type="text"
-                v-model="description_field"
+                v-model="desc_field"
                 label="Description"
               ></v-text-field>
 
               <div
                 height="250"
-                v-for="(item, index) in results_description"
+                v-for="(item, index) in results_desc"
                 :key="index"
               >
                 <br />
                 {{ index + 1 }}.
-                <div><b>Type: </b> {{ item.Type }}</div>
-                <div><b>Status: </b>{{ item.Status }}</div>
-                <div><b>Severity: </b>{{ item.Severity }}</div>
-                <div><b>Employee: </b>{{ item.Employee }}</div>
-                <div><b>Description: </b>{{ item.Description }}</div>
+                <div><b>Device: </b> {{ item.device }}</div>
+                <div><b>Status: </b>{{ item.status }}</div>
+                <div><b>Severity: </b>{{ item.severity }}</div>
+                <div><b>Employee: </b>{{ item.employee }}</div>
+                <div><b>Description: </b>{{ item.desc }}</div>
               </div>
             </v-col>
           </v-row>
@@ -357,13 +357,13 @@ export default {
 
   data() {
     return {
-      curr_item: null,
-      Note: "",
-      show_notes: false,
-      results_description: [],
-      description_field: "",
-      array_types: ["Web", "Mobile"],
       full_data: [],
+      curr_item: null,
+      note: "",
+      show_notes: false,
+      results_desc: [],
+      desc_field: "",
+      array_device: ["Web", "Mobile"],
       search: "",
       expand_search_dialog: false,
       add_dialog: false,
@@ -374,29 +374,31 @@ export default {
       severityItems: ["Low", "Normal", "High"],
 
       item: {
-        Type: "",
-        Status: "",
-        Severity: "",
-        Description: "",
-        Employee: "",
-        Time: "",
-        TimeUnix: "",
+        device: "",
+        status: "",
+        severity: "",
+        desc: "",
+        employee: "",
+        time: "",
+        unix: "",
+        developer: "",
+        note: "",
       },
       data: [],
       headers: {
         General: [
-          { text: "Type", value: "Type" },
-          { text: "Update Time", value: "Time" },
-          { text: "Status", value: "Status" },
-          { text: "Severity", value: "Severity" },
-          { text: "Description", value: "Description" },
-          { text: "Employee", value: "Employee" },
+          { text: "Device", value: "device" },
+          { text: "Update Time", value: "time" },
+          { text: "Status", value: "status" },
+          { text: "Severity", value: "severity" },
+          { text: "Description", value: "desc" },
+          { text: "Employee", value: "employee" },
           { text: "", value: "actions" },
         ],
       },
 
       series_status: [],
-      series_type: [],
+      series_device: [],
       series_severity: [],
 
       options_status: {
@@ -447,7 +449,7 @@ export default {
           },
         },
       },
-      options_types: {
+      options_device: {
         labels: [],
         colors: ["#A1887F", "#90A4AE"],
         legend: {
@@ -481,7 +483,7 @@ export default {
                 },
                 total: {
                   show: true,
-                  label: "Type",
+                  label: "Device",
                   fontSize: "16px",
                   color: "#000000",
                   formatter: function(w) {
@@ -559,11 +561,11 @@ export default {
     },
     check() {
       if (
-        !this.item.Type ||
-        !this.item.Status ||
-        !this.item.Severity ||
-        !this.item.Description ||
-        !this.item.Employee
+        !this.item.device ||
+        !this.item.status ||
+        !this.item.employee ||
+        !this.item.severity ||
+        !this.item.desc 
       ) {
         return true;
       }
@@ -588,14 +590,14 @@ export default {
       this.edit_dialog = true;
     },
     show_expand_search_dialog() {
-      this.results_description = [];
-      this.description_field = "";
+      this.results_desc = [];
+      this.desc_field = "";
       this.expand_search_dialog = true;
     },
     async save_new_item() {
-      this.item.Time =
+      this.item.time =
         moment().format("DD/MM/YYYY") + " " + moment().format("HH:mm:ss");
-      this.item.TimeUnix = moment().format("X");
+      this.item.unix = moment().format("X");
       await axios.post("api/posts/", this.item).then(() => {
         this.full_data = [...this.full_data, this.item];
         this.add_dialog = false;
@@ -606,31 +608,31 @@ export default {
       });
     },
     async save_edited_item() {
-      this.item.Time =
+      this.item.time =
         moment().format("DD/MM/YYYY") + " " + moment().format("HH:mm:ss");
-      this.item.TimeUnix = moment().format("X");
+      this.item.unix = moment().format("X");
       const path = "api/posts/" + this.item._id;
       await axios.put(path, this.item).then(() => {
-        this.Note = "";
+        this.note = "";
         this.show_notes = false;
         this.edit_dialog = false;
         this.chart_data();
       });
     },
-    async search_by_description(val) {
+    async search_by_desc(val) {
       if (val != "") {
-        this.results_description = this.full_data.filter((x) =>
-          x.Description.includes(val)
+        this.results_desc = this.full_data.filter((x) =>
+          x.desc.includes(val)
         );
       } else if (val == "") {
-        this.results_description = [];
+        this.results_desc = [];
       }
     },
     chart_data() {
       this.series_status = [];
       let counts_status = {};
-      this.series_type = [];
-      let counts_type = {};
+      this.series_device = [];
+      let counts_device = {};
       this.series_severity = [];
       let counts_severity = {};
 
@@ -643,30 +645,30 @@ export default {
       let high = 0;
 
       this.full_data.forEach((el) => {
-        if (el.Status === "New") {
+        if (el.status === "New") {
           new1++;
-        } else if (el.Status === "In Process") {
+        } else if (el.status === "In Process") {
           process++;
-        } else if (el.Status === "Fixed") {
+        } else if (el.status === "Fixed") {
           fixed++;
         }
 
-        if (el.Severity === "Low") {
+        if (el.severity === "Low") {
           low++;
-        } else if (el.Severity === "Normal") {
+        } else if (el.severity === "Normal") {
           normal++;
-        } else if (el.Severity === "High") {
+        } else if (el.severity === "High") {
           high++;
         }
 
-        counts_status[el.Status] = counts_status[el.Status]
-          ? (counts_status[el.Status] += 1)
+        counts_status[el.status] = counts_status[el.status]
+          ? (counts_status[el.status] += 1)
           : 1;
-        counts_type[el.Type] = counts_type[el.Type]
-          ? (counts_type[el.Type] += 1)
+        counts_device[el.device] = counts_device[el.device]
+          ? (counts_device[el.device] += 1)
           : 1;
-        counts_severity[el.Severity] = counts_severity[el.Severity]
-          ? (counts_severity[el.Severity] += 1)
+        counts_severity[el.severity] = counts_severity[el.severity]
+          ? (counts_severity[el.severity] += 1)
           : 1;
       });
 
@@ -675,9 +677,9 @@ export default {
         labels: ["New", "In Process", "Fixed"],
       };
 
-      this.series_type = Object.values(counts_type);
-      this.options_types = {
-        labels: Object.keys(counts_type),
+      this.series_device = Object.values(counts_device);
+      this.options_device = {
+        labels: Object.keys(counts_device),
       };
 
       this.series_severity = [low, normal, high];
@@ -697,16 +699,16 @@ export default {
       else if (severity == "High") return "#EF5350";
       else return null;
     },
-    get_type_color(type) {
-      if (type == "Web") return "#A1887F";
-      else if (type == "Mobile") return "#90A4AE";
+    get_device_color(device) {
+      if (device == "Web") return "#A1887F";
+      else if (device == "Mobile") return "#90A4AE";
       else return null;
     },
   },
 
   watch: {
-    description_field: function(val) {
-      this.search_by_description(val);
+    desc_field: function(val) {
+      this.search_by_desc(val);
     },
   },
 };
