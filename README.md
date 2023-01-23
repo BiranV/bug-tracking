@@ -6,6 +6,6 @@ In the project directory, you can run:
 ### `npm install`
 ### `npm run server`
 
-cd client
+cd client:
 ### `npm install`
 ### `npm run serve`
